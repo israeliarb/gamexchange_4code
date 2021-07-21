@@ -48,7 +48,7 @@ class GameOverviewScreen extends StatelessWidget {
                           Expanded(
                             flex: 2,
                             child: Padding(
-                              padding: const EdgeInsets.all(10.0),
+                              padding: const EdgeInsets.only(top: 40.0, bottom: 10.0),
                               child: Container(
                                 decoration: BoxDecoration(
                                     image: DecorationImage(
