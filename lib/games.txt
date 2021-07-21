@@ -1,0 +1,38 @@
+[
+    Product(
+      id: 'g1',
+      nome: 'Red dead redemption 2',
+      xchange: 'Troca',
+      plataforma: 'Ps4',
+      estado: 'Novo',
+      imageUrl:
+          'https://images-na.ssl-images-amazon.com/images/I/71XrxGqPosL._AC_SX342_.jpg',
+    ),
+    Product(
+      id: 'g2',
+      nome: 'Red dead redemption 2',
+      xchange: 'Troca',
+      plataforma: 'Ps4',
+      estado: 'Novo',
+      imageUrl:
+          'https://images-na.ssl-images-amazon.com/images/I/71XrxGqPosL._AC_SX342_.jpg',
+    ),
+    Product(
+      id: 'g3',
+      nome: 'Red dead redemption 2',
+      xchange: 'Troca',
+      plataforma: 'Ps4',
+      estado: 'Novo',
+      imageUrl:
+          'https://images-na.ssl-images-amazon.com/images/I/71XrxGqPosL._AC_SX342_.jpg',
+    ),
+    Product(
+      id: 'g4',
+      nome: 'Red dead redemption 2',
+      xchange: 'Troca',
+      plataforma: 'Ps4',
+      estado: 'Novo',
+      imageUrl:
+          'https://images-na.ssl-images-amazon.com/images/I/71XrxGqPosL._AC_SX342_.jpg',
+    ),
+  ]
