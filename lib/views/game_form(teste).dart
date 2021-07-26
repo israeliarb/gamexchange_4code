@@ -100,19 +100,30 @@ class _GameFormState extends State<GameForm> {
             ),
           ],
         ),
+
+
+
+
         body: _isLoading
             ? Center(child: CircularProgressIndicator())
             : Padding(
-            padding: EdgeInsets.all(15),
+            padding: const EdgeInsets.only(left: 20, right: 20),
             child: Form(
                 key: _form,
                 child: Column(children: <Widget>[
                   TextFormField(
                     initialValue: _formData['nome'],
                     decoration: InputDecoration(
-                      labelText: 'nome',
-                      border: InputBorder.none,
-                      icon: Icon(Icons.title_rounded),
+                      prefixIcon: Icon(Icons.album),
+                      contentPadding:
+                      EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                          borderRadius: BorderRadius.circular(20)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                          borderRadius: BorderRadius.circular(20)),
+                      labelText: 'Nome do jogo',
                     ),
                     validator: (value) {
                       // ignore: missing_return
@@ -123,28 +134,24 @@ class _GameFormState extends State<GameForm> {
                     },
                     onSaved: (value) => _formData['nome'] = value,
                   ),
-                  TextFormField(
-                    initialValue: _formData['xchange'],
-                    decoration: InputDecoration(
-                      labelText: 'xchange',
-                      border: InputBorder.none,
-                      icon: Icon(Icons.gamepad),
-                    ),
-                    validator: (value) {
-                      // ignore: missing_return
-                      if (value == null || value.trim().isEmpty) {
-                        return 'Campo xchange em branco';
-                      }
-                      return null;
-                    },
-                    onSaved: (value) => _formData['xchange'] = value,
+
+
+                  SizedBox(
+                    height: 20,
                   ),
                   TextFormField(
                     initialValue: _formData['plataforma'],
                     decoration: InputDecoration(
-                      labelText: 'plataforma',
-                      border: InputBorder.none,
-                      icon: Icon(Icons.videogame_asset),
+                      prefixIcon: Icon(Icons.videogame_asset),
+                      contentPadding:
+                      EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                          borderRadius: BorderRadius.circular(20)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                          borderRadius: BorderRadius.circular(20)),
+                      labelText: 'Plataforma',
                     ),
                     validator: (value) {
                       // ignore: missing_return
@@ -155,12 +162,21 @@ class _GameFormState extends State<GameForm> {
                     },
                     onSaved: (value) => _formData['plataforma'] = value,
                   ),
+
+
                   TextFormField(
                     initialValue: _formData['estado'],
                     decoration: InputDecoration(
-                      labelText: 'estado',
-                      border: InputBorder.none,
-                      icon: Icon(Icons.announcement_sharp),
+                      prefixIcon: Icon(Icons.arrow_drop_down),
+                      contentPadding:
+                      EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                          borderRadius: BorderRadius.circular(20)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                          borderRadius: BorderRadius.circular(20)),
+                      labelText: 'Estado de conservação',
                     ),
                     validator: (value) {
                       // ignore: missing_return
@@ -171,15 +187,64 @@ class _GameFormState extends State<GameForm> {
                     },
                     onSaved: (value) => _formData['estado'] = value,
                   ),
+                  SizedBox(
+                    height: 20,
+                  ),
+
+
+                  TextFormField(
+                    initialValue: _formData['xchange'],
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.arrow_drop_down),
+                      contentPadding:
+                      EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                          borderRadius: BorderRadius.circular(20)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                          borderRadius: BorderRadius.circular(20)),
+                      labelText: 'Tipo de xchange',
+                    ),
+                    validator: (value) {
+                      // ignore: missing_return
+                      if (value == null || value.trim().isEmpty) {
+                        return 'Campo xchange em branco';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) => _formData['xchange'] = value,
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+
+
                   TextFormField(
                     initialValue: _formData['imageUrl'],
                     decoration: InputDecoration(
-                      labelText: 'URL capa do jogo',
-                      border: InputBorder.none,
-                      icon: Icon(Icons.album_rounded),
+                      prefixIcon: Icon(Icons.image),
+                      contentPadding:
+                      EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                          borderRadius: BorderRadius.circular(20)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                          borderRadius: BorderRadius.circular(20)),
+                      labelText: 'Url Imagem',
                     ),
                     onSaved: (value) => _formData['imageUrl'] = value,
                   ),
-                ]))));
+                  SizedBox(
+                    height: 40,
+                  ),
+
+
+                ]
+                )
+            )
+        )
+    );
   }
 }

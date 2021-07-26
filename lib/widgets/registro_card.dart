@@ -97,12 +97,12 @@ class _RegistroCardState extends State<RegistroCard> {
                   ),
                 ),
                 SizedBox(height: 20,),
-                Padding( //email
+                Padding( //NickName
                   padding: const EdgeInsets.only(left: 20, right: 20),
                   child: TextFormField(
                     autofocus: true,
                     decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.person),
+                      prefixIcon: Icon(Icons.games),
                       contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
                       enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.white),
@@ -130,6 +130,7 @@ class _RegistroCardState extends State<RegistroCard> {
                   child: TextFormField(
                     autofocus: true,
                     decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.mail),
                       contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
                       enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.white),
@@ -187,6 +188,7 @@ class _RegistroCardState extends State<RegistroCard> {
                     autofocus: true,
                     obscureText: true,
                     decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.lock),
                       contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
                       enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.white),
