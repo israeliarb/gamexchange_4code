@@ -37,9 +37,17 @@ class _GameFormState extends State<GameForm> {
     }
   }
 
-  String nomePlataforma = "";
-  var _consoles = [
-    '',
+  var _xchange = [
+    'Troca Permanente',
+    'Troca Temporária',
+    'Venda'
+  ];
+  var _estado= [
+    'Novo',
+    'Semi-novo',
+    'Usado'
+  ];
+   var _consoles = [
     'DreamCast',
     'Game Gear',
     'Game Cube',
@@ -58,8 +66,10 @@ class _GameFormState extends State<GameForm> {
     'Xbox',
     'Xbox 360',
     'Xbox One',
-    'Xbox Series X/S'
+    'Xbox Series X/S',
+     'Outros'
   ];
+
   var _itemSelecionado = '';
 
   void _dropDownItemSelected(String novoItem) {
@@ -72,7 +82,7 @@ class _GameFormState extends State<GameForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 100,
+        toolbarHeight: 60,
         elevation: 0,
         backgroundColor: Colors.grey[900],
         leading: IconButton(
@@ -82,10 +92,7 @@ class _GameFormState extends State<GameForm> {
           icon: Icon(Icons.arrow_back_ios, size: 20, color: Colors.white),
         ),
       ),
-
-
       body: SingleChildScrollView(
-
         child: Container(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -130,7 +137,6 @@ class _GameFormState extends State<GameForm> {
                   SizedBox(
                     height: 30,
                   ),
-
                   Padding(
                       padding: const EdgeInsets.only(left: 20, right: 20),
                       child: Form(
@@ -140,8 +146,8 @@ class _GameFormState extends State<GameForm> {
                               initialValue: _formData['nome'],
                               decoration: InputDecoration(
                                 prefixIcon: Icon(Icons.album),
-                                contentPadding:
-                                EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 0, horizontal: 10),
                                 enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(color: Colors.white),
                                     borderRadius: BorderRadius.circular(20)),
@@ -163,28 +169,40 @@ class _GameFormState extends State<GameForm> {
                               height: 20,
                             ),
 
-
-                            TextFormField(
-                              initialValue: _formData['plataforma'],
-                              decoration: InputDecoration(
-                                prefixIcon: Icon(Icons.videogame_asset),
-                                contentPadding:
-                                EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-                                enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                    borderRadius: BorderRadius.circular(20)),
-                                focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                    borderRadius: BorderRadius.circular(20)),
-                                labelText: 'Plataforma',
-                              ),
+                            //plataforma
+                            DropdownButtonFormField<String>(
+                                decoration: InputDecoration(
+                                    prefixIcon: Icon(Icons.videogame_asset),
+                                    contentPadding:
+                                    EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                                    enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(color: Colors.white),
+                                        borderRadius: BorderRadius.circular(20)),
+                                    focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(color: Colors.white),
+                                        borderRadius: BorderRadius.circular(20)),
+                                    labelText: 'Plataforma'),
+                                items:
+                                    _consoles.map((String dropDownStringItem) {
+                                  return DropdownMenuItem<String>(
+                                    value: dropDownStringItem,
+                                    child: Text(dropDownStringItem),
+                                  );
+                                }).toList(),
+                                onChanged: (String novoItemSelecionado) {
+                                  _dropDownItemSelected(novoItemSelecionado);
+                                  setState(() {
+                                    this._formData['plataforma'] =
+                                        novoItemSelecionado;
+                                  });
+                                },
                               validator: (value) {
-                                // ignore: missing_return
-                                if (value == null || value.trim().isEmpty) {
-                                  return 'Campo plataforma em branco';
-                                }
-                                return null;
-                              },
+                              // ignore: missing_return
+                              if (value == null || value.trim().isEmpty) {
+                                return 'Campo plataforma em branco';
+                              }
+                              return null;
+                            },
                               onSaved: (value) => _formData['plataforma'] = value,
                             ),
                             SizedBox(
@@ -192,12 +210,47 @@ class _GameFormState extends State<GameForm> {
                             ),
 
 
-                            TextFormField(
+                            DropdownButtonFormField<String>(
+                              decoration: InputDecoration(
+                                  prefixIcon: Icon(Icons.auto_fix_high),
+                                  contentPadding:
+                                  EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.white),
+                                      borderRadius: BorderRadius.circular(20)),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.white),
+                                      borderRadius: BorderRadius.circular(20)),
+                                  labelText: 'Estado'),
+                              items:
+                              _estado.map((String dropDownStringItem) {
+                                return DropdownMenuItem<String>(
+                                  value: dropDownStringItem,
+                                  child: Text(dropDownStringItem),
+                                );
+                              }).toList(),
+                              onChanged: (String novoItemSelecionado) {
+                                _dropDownItemSelected(novoItemSelecionado);
+                                setState(() {
+                                  this._formData['estado'] =
+                                      novoItemSelecionado;
+                                });
+                              },
+                              validator: (value) {
+                                // ignore: missing_return
+                                if (value == null || value.trim().isEmpty) {
+                                  return 'Campo estado em branco';
+                                }
+                                return null;
+                              },
+                              onSaved: (value) => _formData['estado'] = value,
+                            ),
+                            /*TextFormField(
                               initialValue: _formData['estado'],
                               decoration: InputDecoration(
                                 prefixIcon: Icon(Icons.arrow_drop_down),
-                                contentPadding:
-                                EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 0, horizontal: 10),
                                 enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(color: Colors.white),
                                     borderRadius: BorderRadius.circular(20)),
@@ -214,26 +267,38 @@ class _GameFormState extends State<GameForm> {
                                 return null;
                               },
                               onSaved: (value) => _formData['estado'] = value,
-                            ),
+                            ),*/
                             SizedBox(
                               height: 20,
                             ),
 
 
-                            TextFormField(
-                              initialValue: _formData['xchange'],
+                            DropdownButtonFormField<String>(
                               decoration: InputDecoration(
-                                prefixIcon: Icon(Icons.arrow_drop_down),
-                                contentPadding:
-                                EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-                                enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                    borderRadius: BorderRadius.circular(20)),
-                                focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                    borderRadius: BorderRadius.circular(20)),
-                                labelText: 'Tipo de xchange',
-                              ),
+                                  prefixIcon: Icon(Icons.auto_awesome), /*Image.asset('assets/icons/xchange.png')*/
+                                  contentPadding:
+                                  EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.white),
+                                      borderRadius: BorderRadius.circular(20)),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.white),
+                                      borderRadius: BorderRadius.circular(20)),
+                                  labelText: 'Xchange'),
+                              items:
+                              _xchange.map((String dropDownStringItem) {
+                                return DropdownMenuItem<String>(
+                                  value: dropDownStringItem,
+                                  child: Text(dropDownStringItem),
+                                );
+                              }).toList(),
+                              onChanged: (String novoItemSelecionado) {
+                                _dropDownItemSelected(novoItemSelecionado);
+                                setState(() {
+                                  this._formData['xchange'] =
+                                      novoItemSelecionado;
+                                });
+                              },
                               validator: (value) {
                                 // ignore: missing_return
                                 if (value == null || value.trim().isEmpty) {
@@ -247,13 +312,12 @@ class _GameFormState extends State<GameForm> {
                               height: 20,
                             ),
 
-
                             TextFormField(
                               initialValue: _formData['imageUrl'],
                               decoration: InputDecoration(
                                 prefixIcon: Icon(Icons.image),
-                                contentPadding:
-                                EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 0, horizontal: 10),
                                 enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(color: Colors.white),
                                     borderRadius: BorderRadius.circular(20)),
@@ -267,11 +331,7 @@ class _GameFormState extends State<GameForm> {
                             SizedBox(
                               height: 40,
                             ),
-                          ]
-                          )
-                      )
-                  ),
-
+                          ]))),
                   MaterialButton(
                     //Confirmar
                     minWidth: 200,
