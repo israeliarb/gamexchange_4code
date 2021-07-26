@@ -42,7 +42,9 @@ class GameOverviewScreen extends StatelessWidget {
                                 child: IconButton(
                                   icon: Icon(Icons.menu),
                                   color: Colors.white,
-                                  onPressed: (){},
+                                  onPressed: (){
+                                    Navigator.pushNamed(context, '/my-games');
+                                  },
                                 )
                               )
                             ),
@@ -69,7 +71,7 @@ class GameOverviewScreen extends StatelessWidget {
                                       icon: Icon(Icons.account_box),
                                       color: Colors.white,
                                       onPressed: (){
-                                        Navigator.pushNamed(context, '/game-form');
+
                                       },
                                     )
                                 )

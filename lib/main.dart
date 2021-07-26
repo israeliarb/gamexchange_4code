@@ -9,6 +9,7 @@ import './views/games_overview_screen.dart';
 import './views/login_overview_screen.dart';
 import './views/signin_overview_screen.dart';
 import './views/game_form.dart';
+import './views/mygames_list.dart';
 
 import './routes/AppRotas.dart';
 import './provider/users.dart';
@@ -57,6 +58,7 @@ class MyApp extends StatelessWidget {
           AppRotas.GAME: (ctx) => GameOverviewScreen(),
           AppRotas.REGISTRO: (ctx) => SigninOverviewScreen(),
           AppRotas.GAME_FORM: (ctx) => GameForm(),
+          AppRotas.MY_GAMES: (ctx) => MyGameList(),
         },
       ),
     );
