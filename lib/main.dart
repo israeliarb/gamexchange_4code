@@ -8,6 +8,7 @@ import'package:provider/provider.dart';
 import './views/games_overview_screen.dart';
 import './views/login_overview_screen.dart';
 import './views/signin_overview_screen.dart';
+import './views/game_form.dart';
 
 import './routes/AppRotas.dart';
 import './provider/users.dart';
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
 
         ),
 
-        ChangeNotifierProvider(
+        ChangeNotifierProvider<Games>(
           create: (_) => new Games(),
         ),
         /*
@@ -55,6 +56,7 @@ class MyApp extends StatelessWidget {
           AppRotas.AUTH: (ctx) => LoginOverviewScreen(),
           AppRotas.GAME: (ctx) => GameOverviewScreen(),
           AppRotas.REGISTRO: (ctx) => SigninOverviewScreen(),
+          AppRotas.GAME_FORM: (ctx) => GameForm(),
         },
       ),
     );
