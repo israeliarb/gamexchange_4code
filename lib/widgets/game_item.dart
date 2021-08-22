@@ -10,27 +10,27 @@ class GameItem extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return GridTile(
-        child: Image.network(
-          game.imageUrl,
-          fit: BoxFit.cover,
+      child: Image.network(
+        game.imageUrl,
+        fit: BoxFit.cover,
 
+      ),
+      footer: GridTileBar(
+        backgroundColor: Colors.black38,
+        leading: IconButton(
+          icon: Image.asset('assets/icons/xchange.png'),
+          iconSize: 10,
+          onPressed: () {},
         ),
-        footer: GridTileBar(
-          backgroundColor: Colors.black38,
-          leading: IconButton(
-            icon: Image.asset('assets/icons/xchange.png'),
-            iconSize: 10,
-            onPressed: () {},
-          ),
-          title: Text(
-            game.xchange,
-            textAlign: TextAlign.center,
-          ),
-          trailing: IconButton(
-            icon: Icon(Icons.article),
-            onPressed: (){},
-          ),
+        title: Text(
+          game.xchange,
+          textAlign: TextAlign.center,
         ),
+        trailing: IconButton(
+          icon: Icon(Icons.article),
+          onPressed: (){},
+        ),
+      ),
     );
   }
 
