@@ -2,8 +2,8 @@ import 'package:gamexchange_4code/provider/games.dart';
 import 'package:gamexchange_4code/provider/users.dart';
 import 'package:gamexchange_4code/routes/AppRotas.dart';
 import 'package:flutter/material.dart';
+import 'package:gamexchange_4code/views/auth_home_screen.dart';
 import 'package:gamexchange_4code/widgets/registro_card.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import'package:provider/provider.dart';
 import './views/games_overview_screen.dart';
@@ -15,8 +15,6 @@ import './views/mygames_list.dart';
 import './routes/AppRotas.dart';
 import './provider/users.dart';
 import './provider/auth.dart';
-
-import 'dart:async';
 
 
 void main() => runApp(MyApp());
@@ -36,8 +34,9 @@ class MyApp extends StatelessWidget {
 
         ),
 
-        ChangeNotifierProvider<Games>(
-          create: (_) => new Games(),
+        ChangeNotifierProxyProvider<Auth, Games>(
+          create:(_) => new Games(null, null, []),
+          update: (ctx,auth,previousGames) => new Games(auth.token,auth.userId,previousGames.items,),
         ),
         /*
         ChangeNotifierProxyProvider<Auth, Orders>(
@@ -57,7 +56,7 @@ class MyApp extends StatelessWidget {
           //fontFamily: 'Lato',
         ),
         routes: {
-          AppRotas.AUTH: (ctx) => LoginOverviewScreen(),
+          AppRotas.AUTH: (ctx) => AuthOrHomeScreen(),
           AppRotas.GAME: (ctx) => GameOverviewScreen(),
           AppRotas.REGISTRO: (ctx) => SigninOverviewScreen(),
           AppRotas.GAME_FORM: (ctx) => GameForm(),

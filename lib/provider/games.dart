@@ -10,15 +10,18 @@ class Games with ChangeNotifier {
   static const _baseUrl =
       'https://code-gamexchange-default-rtdb.firebaseio.com/games';
   List<Game> _items = []; /*{...GAMES_EXEMPLO}*/
-
+  String _token;
+  String _userId;
   List<Game> get items => [..._items];
+
+  Games(this._token,this._userId,this._items);
 
   int get count {
     return _items.length;
   }
 
   Future<void> carregarGames() async {
-    final response = await http.get(Uri.parse("$_baseUrl.json"));
+    final response = await http.get(Uri.parse("$_baseUrl/$_userId.json?auth=$_token"));
     Map<String, dynamic> data = json.decode(response.body);
 
     _items.clear();
@@ -40,7 +43,7 @@ class Games with ChangeNotifier {
 
   Future<void> adicionarGame(Game novoGame) async {
     final response = await http.post(
-      Uri.parse("$_baseUrl.json"),
+      Uri.parse("$_baseUrl/$_userId.json"),
       body: json.encode({
         'nome': novoGame.nome,
         'xchange': novoGame.xchange,

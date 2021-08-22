@@ -209,7 +209,7 @@ class _GameFormState extends State<GameForm> {
                               height: 20,
                             ),
 
-                            //Estado
+
                             DropdownButtonFormField<String>(
                               decoration: InputDecoration(
                                   prefixIcon: Icon(Icons.auto_fix_high),
@@ -245,11 +245,34 @@ class _GameFormState extends State<GameForm> {
                               },
                               onSaved: (value) => _formData['estado'] = value,
                             ),
+                            /*TextFormField(
+                              initialValue: _formData['estado'],
+                              decoration: InputDecoration(
+                                prefixIcon: Icon(Icons.arrow_drop_down),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 0, horizontal: 10),
+                                enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.white),
+                                    borderRadius: BorderRadius.circular(20)),
+                                focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.white),
+                                    borderRadius: BorderRadius.circular(20)),
+                                labelText: 'Estado de conservação',
+                              ),
+                              validator: (value) {
+                                // ignore: missing_return
+                                if (value == null || value.trim().isEmpty) {
+                                  return 'Campo estado em branco';
+                                }
+                                return null;
+                              },
+                              onSaved: (value) => _formData['estado'] = value,
+                            ),*/
                             SizedBox(
                               height: 20,
                             ),
 
-                            //Xchange
+
                             DropdownButtonFormField<String>(
                               decoration: InputDecoration(
                                   prefixIcon: Icon(Icons.auto_awesome), /*Image.asset('assets/icons/xchange.png')*/
@@ -289,7 +312,6 @@ class _GameFormState extends State<GameForm> {
                               height: 20,
                             ),
 
-                            //Imagem URL
                             TextFormField(
                               initialValue: _formData['imageUrl'],
                               decoration: InputDecoration(
@@ -377,6 +399,7 @@ class _GameFormState extends State<GameForm> {
                           TextStyle(fontWeight: FontWeight.w400, fontSize: 18),
                     ),
                   ),
+
                 ],
               ),
             ),

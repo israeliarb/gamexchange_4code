@@ -89,8 +89,6 @@ class MyGameList extends StatelessWidget {
                           ),
                         ),
                       ),
-
-                          
                           SingleChildScrollView(
                             child: Container(
                                 //height: 300,
@@ -125,14 +123,13 @@ class MyGameList extends StatelessWidget {
                                               childAspectRatio: 3 / 3 ,
                                               mainAxisSpacing: 10
                                           ),
+
                                         ),
                                       ),
-
                                   ],
                                 ),
                               ),
                           ),
-
                       ],
 
             ),

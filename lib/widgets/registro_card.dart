@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:gamexchange_4code/provider/users.dart';
 
 
+
 class RegistroCard extends StatefulWidget {
 
   @override
