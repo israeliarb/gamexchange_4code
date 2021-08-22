@@ -61,11 +61,11 @@ class _MyGameListState extends State<MyGameList> {
                   height: 20,
                 ),
                 ListTile(
-                    leading: Icon(Icons.games),
-                    title: Text("Meus Jogos"),
+                    leading: Icon(Icons.home),
+                    title: Text("Início"),
                     //trailing: Icon(Icons.arrow_forward),
                     onTap: () {
-                      Navigator.pushNamed(context, AppRotas.MY_GAMES);
+                      Navigator.pushNamed(context, AppRotas.GAME);
                     })
               ],
             )),

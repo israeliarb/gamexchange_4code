@@ -171,6 +171,7 @@ class _GameFormState extends State<GameForm> {
 
                             //plataforma
                             DropdownButtonFormField<String>(
+                              value: _formData['plataforma'],
                               decoration: InputDecoration(
                                   prefixIcon: Icon(Icons.videogame_asset),
                                   contentPadding:
@@ -211,6 +212,7 @@ class _GameFormState extends State<GameForm> {
 
                             //Estado
                             DropdownButtonFormField<String>(
+                              value: _formData['estado'],
                               decoration: InputDecoration(
                                   prefixIcon: Icon(Icons.auto_fix_high),
                                   contentPadding:
@@ -251,6 +253,7 @@ class _GameFormState extends State<GameForm> {
 
                             //Xchange
                             DropdownButtonFormField<String>(
+                              value: _formData['xchange'],
                               decoration: InputDecoration(
                                   prefixIcon: Icon(Icons.auto_awesome), /*Image.asset('assets/icons/xchange.png')*/
                                   contentPadding:

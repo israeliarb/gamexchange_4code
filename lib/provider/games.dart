@@ -72,7 +72,7 @@ class Games with ChangeNotifier {
     final index = _items.indexWhere((prod) => prod.id == game.id);
     if (index >= 0) {
       await http.patch(
-        Uri.parse("$_baseUrl/${game.id}.json"),
+        Uri.parse("$_baseUrl/$_userId/${game.id}.json?auth=$_token"),
         body: json.encode({
           'nome': game.nome,
           'xchange': game.xchange,
@@ -94,7 +94,7 @@ class Games with ChangeNotifier {
       notifyListeners();
 
       final response =
-          await http.delete(Uri.parse("$_baseUrl/${game.id}.json"));
+          await http.delete(Uri.parse("$_baseUrl/$_userId/${game.id}.json?auth=$_token"));
 
       if (response.statusCode >= 400) {
         _items.insert(index, game);
