@@ -2,12 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../models/game.dart';
 import '../provider/games.dart';
-import '../widgets/game_item.dart';
+import '../widgets/mygame_item.dart';
 import 'package:provider/provider.dart';
 
 
 class MyGameList extends StatelessWidget {
-  //const GameOverviewScreen({Key? key}) : super(key: key);
 
   Future<void> _refreshProducts(BuildContext context) {
     return Provider.of<Games>(context, listen: false).carregarGames();
@@ -116,7 +115,7 @@ class MyGameList extends StatelessWidget {
                                           scrollDirection: Axis.vertical,
                                           //padding: const EdgeInsets.all(10),
                                           itemCount: games.count,
-                                          itemBuilder: (ctx, i) => GameItem(game[i]),
+                                          itemBuilder: (ctx, i) => MyGameItem(game[i]),
                                           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                               crossAxisCount: 1,
                                               //maxCrossAxisExtent: 200,

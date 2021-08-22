@@ -20,18 +20,20 @@ import './provider/auth.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+
+
+
   @override
   Widget build(BuildContext context) {
 
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-        create: (_) => new Auth(),
-    ),
+          create: (_) => new Auth(),
+        ),
 
-    ChangeNotifierProvider<Users>(
+        ChangeNotifierProvider<Users>(
           create: (_) => Users(),
-
         ),
 
         ChangeNotifierProxyProvider<Auth, Games>(
