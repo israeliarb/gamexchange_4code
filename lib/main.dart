@@ -11,6 +11,7 @@ import './views/login_overview_screen.dart';
 import './views/signin_overview_screen.dart';
 import './views/game_form.dart';
 import './views/mygames_list.dart';
+import 'package:geolocator/geolocator.dart';
 
 import './routes/AppRotas.dart';
 import './provider/users.dart';
@@ -20,8 +21,6 @@ import './provider/auth.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-
-
 
   @override
   Widget build(BuildContext context) {
