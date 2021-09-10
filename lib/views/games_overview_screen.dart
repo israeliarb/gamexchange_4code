@@ -17,13 +17,11 @@ class GameOverviewScreen extends StatelessWidget {
 
   final List<Game> loadedGames = DUMMY_GAMES;
 
-  final _cadastroData =  Map<String, Object>();
 
   getCurrentLocation(BuildContext context) async{
     //if(getPermission() != 0){
       _currentPosition = await Geolocator.getCurrentPosition();
       print(_currentPosition);
-      _cadastroData['local']=_currentPosition;
       Auth _auth = Provider.of<Auth>(context, listen: false);
       Users _users = Provider.of<Users>(context, listen: false);
 

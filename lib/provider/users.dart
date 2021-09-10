@@ -33,7 +33,7 @@ class Users with ChangeNotifier {
           email: userData['email'],
           telefone: userData['telefone'],
           password: userData['password'],
-          local: userData['local'],
+          //local: userData['local'],
         ));
       });
       notifyListeners();
