@@ -1,10 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gamexchange_4code/models/user.dart';
+import 'package:gamexchange_4code/provider/auth.dart';
+import 'package:gamexchange_4code/provider/users.dart';
 import 'package:gamexchange_4code/routes/AppRotas.dart';
 import '../data/dummy_data.dart';
 import '../models/game.dart';
 import '../widgets/game_item.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:provider/provider.dart';
 
 class GameOverviewScreen extends StatelessWidget {
   //const GameOverviewScreen({Key? key}) : super(key: key);
@@ -13,11 +17,21 @@ class GameOverviewScreen extends StatelessWidget {
 
   final List<Game> loadedGames = DUMMY_GAMES;
 
-  getCurrentLocation() async{
+  final _cadastroData =  Map<String, Object>();
+
+  getCurrentLocation(BuildContext context) async{
     //if(getPermission() != 0){
       _currentPosition = await Geolocator.getCurrentPosition();
       print(_currentPosition);
-    //}
+      _cadastroData['local']=_currentPosition;
+      Auth _auth = Provider.of<Auth>(context, listen: false);
+      Users _users = Provider.of<Users>(context, listen: false);
+
+      User _user = _auth.currentUser;
+      print(_user);
+      _user.local = _currentPosition;
+      _users.atualizarUser(_user);
+      //}
 
   }
 
@@ -35,7 +49,7 @@ class GameOverviewScreen extends StatelessWidget {
 
     return StatefulWrapper(
       onInit: (){
-        getCurrentLocation();
+        getCurrentLocation(context);
       },
       child: Scaffold(
         appBar: AppBar(
@@ -74,6 +88,18 @@ class GameOverviewScreen extends StatelessWidget {
                     onTap: () {
                       Navigator.pushNamed(
                           context, AppRotas.MY_GAMES);
+                    }
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                ListTile(
+                    leading: Icon(Icons.inbox),
+                    title: Text("Meus Xchanges"),
+                    //trailing: Icon(Icons.arrow_forward),
+                    onTap: () {
+                      Navigator.pushNamed(
+                          context, AppRotas.MY_XCHANGES);
                     }
                 )
               ],

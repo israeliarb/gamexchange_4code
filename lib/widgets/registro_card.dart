@@ -245,6 +245,7 @@ class _RegistroCardState extends State<RegistroCard> {
                           Auth auth = Provider.of(context, listen: false);
                           await auth.signup(_cadastroData['email'],    //salvando autenticação no banco
                             _cadastroData['password'],
+                            context
                           );
                          if (_cadastroData['id'] == null) {
                             await users.adicionarUser(user);   //salvando usuário

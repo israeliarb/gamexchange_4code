@@ -62,6 +62,7 @@ class _AuthCardState extends State<AuthCard> {
       await auth.login(
         _authData["email"],
         _authData["password"],
+        context
 
       );
       Navigator.pushNamed(context, '/game-overview-screen');

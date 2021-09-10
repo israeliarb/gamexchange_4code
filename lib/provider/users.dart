@@ -3,7 +3,6 @@ import 'dart:io';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:gamexchange_4code/models/user.dart';
-
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'dart:core';
@@ -12,7 +11,7 @@ class Users with ChangeNotifier {
   static const _baseUrl = 'https://code-gamexchange-default-rtdb.firebaseio.com/users';
   List<User> _items = [];
 
- 
+
 
   List<User> get items => [..._items];
 
@@ -34,6 +33,7 @@ class Users with ChangeNotifier {
           email: userData['email'],
           telefone: userData['telefone'],
           password: userData['password'],
+          local: userData['local'],
         ));
       });
       notifyListeners();
@@ -50,7 +50,7 @@ class Users with ChangeNotifier {
         'email': novoUser.email,
         'telefone': novoUser.telefone,
         'password': novoUser.password,
-
+        'local':novoUser.local,
       }),
     );
 
@@ -61,7 +61,7 @@ class Users with ChangeNotifier {
       email: novoUser.email,
       telefone: novoUser.telefone,
       password: novoUser.password,
-
+      local: novoUser.local,
     ));
     notifyListeners();
   }
@@ -80,7 +80,7 @@ class Users with ChangeNotifier {
           'email': user.email,
           'telefone': user.telefone,
           'password': user.password,
-
+          'local': user.local,
         }),
       );
       _items[index] = user;
@@ -102,6 +102,16 @@ class Users with ChangeNotifier {
         notifyListeners();
         throw HttpException('Ocorreu um erro na exclusão do usuário.');
       }
+    }
+  }
+
+  Future<User> findUserByEmail(String email) async {
+    await carregarUser();
+    final index = _items.indexWhere((prod) => prod.email == email);
+    if(index >= 0){
+      final user = _items[index];
+      // notifyListeners();
+      return user;
     }
   }
 }

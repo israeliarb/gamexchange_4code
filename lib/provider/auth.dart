@@ -4,18 +4,26 @@ import 'package:flutter/material.dart';
 
 import 'package:gamexchange_4code/data/store.dart';
 import 'package:gamexchange_4code/exceptions/auth_exception.dart';
+import 'package:gamexchange_4code/models/user.dart';
+import 'package:gamexchange_4code/provider/users.dart';
 
 import 'package:http/http.dart' as http;
 import 'dart:core';
+import 'package:provider/provider.dart';
 
 class Auth with ChangeNotifier {
   String _userId;
   String _token;
   DateTime _expiryDate;
   Timer _logoutTimer;
+  User _currentUser;
 
   bool get isAuth {
     return token != null;
+  }
+
+  User get currentUser {
+    return isAuth? _currentUser: null;
   }
 
   String get userId {
@@ -34,7 +42,10 @@ class Auth with ChangeNotifier {
 
 
 
-  Future<void> _authenticate(String email, String password, String urlSegment) async {
+  Future<void> _authenticate(String email, String password, String urlSegment, BuildContext context) async {
+    Users users = Provider.of<Users>(context, listen: false);
+
+
     final url =
         'https://identitytoolkit.googleapis.com/v1/accounts:$urlSegment?key=AIzaSyATZVD3Ar0PjREpePDxiKZ01RsmmvZCZ_E';
 
@@ -51,8 +62,12 @@ class Auth with ChangeNotifier {
     if (responseBody["error"] != null) {
       throw AuthException(responseBody['error']['message']);
     } else {
+      await users.carregarUser();
+
+
       _token = responseBody["idToken"];
       _userId = responseBody["localId"];
+      _currentUser = await users.findUserByEmail(email);
       _expiryDate = DateTime.now().add(
         Duration(
           seconds: int.parse(responseBody["expiresIn"]),
@@ -72,12 +87,12 @@ class Auth with ChangeNotifier {
     return Future.value();
   }
 
-  Future<void> signup(String email, String password) async {
-    return _authenticate(email, password, "signUp");
+  Future<void> signup(String email, String password, BuildContext context) async {
+    return _authenticate(email, password, "signUp", context);
   }
 
-  Future<void> login(String email, String password) async {
-    return _authenticate(email, password, "signInWithPassword");
+  Future<void> login(String email, String password, BuildContext context) async {
+    return _authenticate(email, password, "signInWithPassword", context);
   }
 
   Future<void> tryAutoLogin() async {
