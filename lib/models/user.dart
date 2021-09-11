@@ -11,7 +11,6 @@ class User with ChangeNotifier{
   double latitude;
   double longitude;
 
-
   User({
     this.id,
     @required this.nome,

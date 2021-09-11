@@ -249,7 +249,9 @@ class _RegistroCardState extends State<RegistroCard> {
                           );
                          if (_cadastroData['id'] == null) {
                             await users.adicionarUser(user);   //salvando usuário
-                          }
+                          } else{
+                           await users.atualizarUser(user);
+                         }
                           //Navigator.of(context).pop();
                         } on AuthException catch (error) {
                           _showErrorDialog(error.toString());
