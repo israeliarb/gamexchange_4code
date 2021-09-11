@@ -27,7 +27,8 @@ class GameOverviewScreen extends StatelessWidget {
 
       User _user = _auth.currentUser;
       print(_user);
-      _user.local = _currentPosition;
+      _user.latitude = _currentPosition.latitude;
+      _user.longitude = _currentPosition.longitude;
       _users.atualizarUser(_user);
       //}
 

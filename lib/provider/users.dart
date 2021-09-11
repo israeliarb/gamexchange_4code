@@ -26,6 +26,7 @@ class Users with ChangeNotifier {
     _items.clear();
     if (data != null) {
       data.forEach((userId, userData) {
+        print(userData['local']);
         _items.add(User(
           id: userId,
           nome: userData['nome'],
@@ -33,7 +34,8 @@ class Users with ChangeNotifier {
           email: userData['email'],
           telefone: userData['telefone'],
           password: userData['password'],
-          //local: userData['local'],
+          latitude: userData['latitude'], //tipo position não pode ser atribuído a string
+          longitude: userData['longitude'],
         ));
       });
       notifyListeners();
@@ -50,7 +52,8 @@ class Users with ChangeNotifier {
         'email': novoUser.email,
         'telefone': novoUser.telefone,
         'password': novoUser.password,
-        'local':novoUser.local,
+        'latitude':novoUser.latitude,
+        'longitude': novoUser.longitude,
       }),
     );
 
@@ -61,7 +64,8 @@ class Users with ChangeNotifier {
       email: novoUser.email,
       telefone: novoUser.telefone,
       password: novoUser.password,
-      local: novoUser.local,
+      latitude: novoUser.latitude,
+      longitude: novoUser.longitude,
     ));
     notifyListeners();
   }
@@ -80,7 +84,8 @@ class Users with ChangeNotifier {
           'email': user.email,
           'telefone': user.telefone,
           'password': user.password,
-          'local': user.local,
+          'latitude': user.latitude,
+          'longitude': user.longitude,
         }),
       );
       _items[index] = user;

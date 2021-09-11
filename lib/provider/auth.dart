@@ -6,6 +6,7 @@ import 'package:gamexchange_4code/data/store.dart';
 import 'package:gamexchange_4code/exceptions/auth_exception.dart';
 import 'package:gamexchange_4code/models/user.dart';
 import 'package:gamexchange_4code/provider/users.dart';
+import 'package:geolocator/geolocator.dart';
 
 import 'package:http/http.dart' as http;
 import 'dart:core';
@@ -17,6 +18,7 @@ class Auth with ChangeNotifier {
   DateTime _expiryDate;
   Timer _logoutTimer;
   User _currentUser;
+  Position _local;
 
   bool get isAuth {
     return token != null;

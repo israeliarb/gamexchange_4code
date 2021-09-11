@@ -65,6 +65,7 @@ class _AuthCardState extends State<AuthCard> {
         context
 
       );
+
       Navigator.pushNamed(context, '/game-overview-screen');
 
     } on AuthException catch (error) {

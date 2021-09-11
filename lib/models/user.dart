@@ -8,7 +8,8 @@ class User with ChangeNotifier{
   final String email;
   final String telefone;
   final String password;
-  Position local;
+  double latitude;
+  double longitude;
 
 
   User({
@@ -18,7 +19,7 @@ class User with ChangeNotifier{
     @required this.email,
     @required this.telefone,
     @required this.password,
-    this.local,
-
+    this.latitude,
+    this.longitude,
   });
 }
