@@ -5,6 +5,7 @@ import '../provider/games.dart';
 import '../widgets/mygame_item.dart';
 import 'package:provider/provider.dart';
 import 'package:gamexchange_4code/provider/games.dart';
+import 'package:gamexchange_4code/widgets/menu_lateral.dart';
 import 'package:gamexchange_4code/widgets/mygame_item.dart';
 
 class MyGameList extends StatefulWidget {
@@ -48,27 +49,7 @@ class _MyGameListState extends State<MyGameList> {
                 },
               )
             ]),
-        drawer: Drawer(
-            child: ListView(
-              children: <Widget>[
-                /*DrawerHeader(
-                child: Text('Drawer Header'),
-                decoration: BoxDecoration(
-                  color: Colors.cyan,
-                ),
-              ),*/
-                SizedBox(
-                  height: 20,
-                ),
-                ListTile(
-                    leading: Icon(Icons.home),
-                    title: Text("Início"),
-                    //trailing: Icon(Icons.arrow_forward),
-                    onTap: () {
-                      Navigator.pushNamed(context, AppRotas.GAME);
-                    })
-              ],
-            )),
+        drawer: MenuLateral(),
         body: SingleChildScrollView(
           child: Container(
             alignment: Alignment.center,

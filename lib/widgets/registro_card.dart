@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:gamexchange_4code/exceptions/auth_exception.dart';
 import 'package:gamexchange_4code/models/user.dart';
 import 'package:gamexchange_4code/provider/auth.dart';
+import 'package:gamexchange_4code/routes/AppRotas.dart';
 import 'package:provider/provider.dart';
 import 'package:gamexchange_4code/provider/users.dart';
 
@@ -44,6 +45,8 @@ class _RegistroCardState extends State<RegistroCard> {
           ),
     );
   }
+
+
   @override
   Widget build(BuildContext context) {
     final focus = FocusNode();
@@ -219,7 +222,7 @@ class _RegistroCardState extends State<RegistroCard> {
                   MaterialButton( //login
                     minWidth: 200, height:  40, color: Colors.orange,
                     shape: RoundedRectangleBorder(side: BorderSide(), borderRadius: BorderRadius.circular(20)),
-                    child: Text("Cadastrar-me", style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18, color: Colors.black)),
+                    child: Text("Cadastrar", style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18, color: Colors.black)),
 
                     onPressed: () async{
 
@@ -278,12 +281,12 @@ class _RegistroCardState extends State<RegistroCard> {
                           });
                         }
                       }
-                      Navigator.pushNamed(context, '/');
+                      Navigator.pushNamed(context, AppRotas.LOGIN);
                     },
                   ),
                 // ignore: deprecated_member_use
                 FlatButton(
-                  onPressed: () => Navigator.pushNamed(context, '/'),
+                  onPressed: () => Navigator.pushNamed(context, AppRotas.LOGIN),
                   minWidth: 200,
                   height:  40,
                   child: Text("Login", style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18)),

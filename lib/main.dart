@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:gamexchange_4code/views/auth_home_screen.dart';
 import 'package:gamexchange_4code/views/xchange_recebidos.dart';
 import 'package:gamexchange_4code/widgets/registro_card.dart';
+import 'package:gamexchange_4code/widgets/menu_lateral.dart';
 
 import'package:provider/provider.dart';
 import './views/games_overview_screen.dart';
@@ -59,6 +60,7 @@ class MyApp extends StatelessWidget {
         ),
         routes: {
           AppRotas.AUTH: (ctx) => AuthOrHomeScreen(),
+          AppRotas.LOGIN: (ctx) => LoginOverviewScreen(),
           AppRotas.GAME: (ctx) => GameOverviewScreen(),
           AppRotas.REGISTRO: (ctx) => SigninOverviewScreen(),
           AppRotas.GAME_FORM: (ctx) => GameForm(),

@@ -11,8 +11,6 @@ class Users with ChangeNotifier {
   static const _baseUrl = 'https://code-gamexchange-default-rtdb.firebaseio.com/users';
   List<User> _items = [];
 
-
-
   List<User> get items => [..._items];
 
   int get Usercount {

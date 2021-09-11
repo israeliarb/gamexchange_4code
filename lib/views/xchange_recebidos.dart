@@ -6,6 +6,7 @@ import '../models/game.dart';
 import '../models/xchange.dart';
 import 'package:provider/provider.dart';
 import 'package:gamexchange_4code/provider/xchanges.dart';
+import 'package:gamexchange_4code/widgets/menu_lateral.dart';
 import 'package:gamexchange_4code/widgets/xchange_item.dart';
 
 class XchangeRecebidos extends StatefulWidget {
@@ -50,27 +51,7 @@ class _XchangeRecebidosState extends State<XchangeRecebidos> {
                 },
               )
             ]),
-        drawer: Drawer(
-            child: ListView(
-              children: <Widget>[
-                /*DrawerHeader(
-                child: Text('Drawer Header'),
-                decoration: BoxDecoration(
-                  color: Colors.cyan,
-                ),
-              ),*/
-                SizedBox(
-                  height: 20,
-                ),
-                ListTile(
-                    leading: Icon(Icons.home),
-                    title: Text("Início"),
-                    //trailing: Icon(Icons.arrow_forward),
-                    onTap: () {
-                      Navigator.pushNamed(context, AppRotas.GAME);
-                    })
-              ],
-            )),
+        drawer: MenuLateral(),
         body: SingleChildScrollView(
           child: Container(
             alignment: Alignment.center,

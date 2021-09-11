@@ -9,6 +9,7 @@ import '../models/game.dart';
 import '../widgets/game_item.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
+import 'package:gamexchange_4code/widgets/menu_lateral.dart';
 
 class GameOverviewScreen extends StatelessWidget {
   //const GameOverviewScreen({Key? key}) : super(key: key);
@@ -17,21 +18,19 @@ class GameOverviewScreen extends StatelessWidget {
 
   final List<Game> loadedGames = DUMMY_GAMES;
 
-
-  getCurrentLocation(BuildContext context) async{
+  getCurrentLocation(BuildContext context) async {
     //if(getPermission() != 0){
-      _currentPosition = await Geolocator.getCurrentPosition();
-      print(_currentPosition);
-      Auth _auth = Provider.of<Auth>(context, listen: false);
-      Users _users = Provider.of<Users>(context, listen: false);
+    _currentPosition = await Geolocator.getCurrentPosition();
+    print(_currentPosition);
+    Auth _auth = Provider.of<Auth>(context, listen: false);
+    Users _users = Provider.of<Users>(context, listen: false);
 
-      User _user = _auth.currentUser;
-      print(_user);
-      _user.latitude = _currentPosition.latitude;
-      _user.longitude = _currentPosition.longitude;
-      _users.atualizarUser(_user);
-      //}
-
+    User _user = _auth.currentUser;
+    print(_user);
+    _user.latitude = _currentPosition.latitude;
+    _user.longitude = _currentPosition.longitude;
+    _users.atualizarUser(_user);
+    //}
   }
 
   /*getPermission() async {
@@ -45,64 +44,88 @@ class GameOverviewScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return StatefulWrapper(
-      onInit: (){
+      onInit: () {
         getCurrentLocation(context);
       },
       child: Scaffold(
         appBar: AppBar(
-            toolbarHeight: 60,
-            elevation: 0,
-            title: Center(
-              child: Image.asset('assets/icons/gamexchange.png',
-                  fit: BoxFit.contain, height: 40,  alignment: Alignment.center),
-            ),
-            backgroundColor: Colors.grey[900],
-            actions: <Widget> [
+          toolbarHeight: 60,
+          elevation: 0,
+          title: Center(
+            child: Image.asset('assets/icons/gamexchange.png',
+                fit: BoxFit.contain, height: 40, alignment: Alignment.center),
+          ),
+          backgroundColor: Colors.grey[900],
+          leading: Builder(
+            builder: (context) {
+              return IconButton(
+                icon: Icon(Icons.menu),
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+              );
+            },
+          ),
+          actions: <Widget>[
+            Builder(
+              builder: (context) {
+                return IconButton(
+                  icon: Icon(Icons.person, size: 20, color: Colors.white),
+                  onPressed: () {
+                    Scaffold.of(context).openEndDrawer();
+                  },
+                );
+              },
+            )
+          ],
+          /*actions: <Widget> [
               IconButton(
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.pop(context, );
                 },
                 icon: Icon(Icons.account_box, size: 20, color: Colors.white),
               ),
-            ]),
-
-        drawer: Drawer(
-            child: ListView(
-              children: <Widget>[
-                /*DrawerHeader(
-                  child: Text('Drawer Header'),
-                  decoration: BoxDecoration(
-                    color: Colors.cyan,
-                  ),
-                ),*/
-                SizedBox(
-                  height: 20,
+            ],*/
+        ),
+        drawer: MenuLateral(),
+        endDrawer: Drawer(
+          child: ListView(
+            children: <Widget>[
+              DrawerHeader(
+                child: Text(
+                  "Usuario", //VERIFICAR COMO COLOCAR O NOME DO USUÁRIO
+                  style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.grey[200],
+                      fontFamily: 'Anton'),
                 ),
-                ListTile(
-                    leading: Icon(Icons.games),
-                    title: Text("Meus Jogos"),
-                    //trailing: Icon(Icons.arrow_forward),
-                    onTap: () {
-                      Navigator.pushNamed(
-                          context, AppRotas.MY_GAMES);
-                    }
+                decoration: BoxDecoration(
+                  color: Colors.grey[700],
                 ),
-                SizedBox(
-                  height: 20,
-                ),
-                ListTile(
-                    leading: Icon(Icons.inbox),
-                    title: Text("Meus Xchanges"),
-                    //trailing: Icon(Icons.arrow_forward),
-                    onTap: () {
-                      Navigator.pushNamed(
-                          context, AppRotas.MY_XCHANGES);
-                    }
-                )
-              ],
-            )
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              ListTile(
+                leading: Icon(Icons.edit),
+                title: Text("Alterar Usuário"),
+                onTap: () {
+                  Navigator.pushNamed(context, AppRotas.REGISTRO);
+                },
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              ListTile(
+                  leading: Icon(Icons.logout),
+                  title: Text("Sair"),
+                  //trailing: Icon(Icons.arrow_forward),
+                  onTap: () {
+                    Navigator.pushNamed(context, AppRotas.LOGIN);
+                  }),
+            ],
+          ),
         ),
         body: SingleChildScrollView(
           child: Container(
@@ -116,7 +139,6 @@ class GameOverviewScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
                 SizedBox(
                   height: 20,
                 ),
@@ -161,11 +183,11 @@ class GameOverviewScreen extends StatelessWidget {
                                   itemBuilder: (ctx, i) =>
                                       GameItem(loadedGames[i]),
                                   gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 1,
-                                      //maxCrossAxisExtent: 200,
-                                      childAspectRatio: 4 / 3,
-                                      mainAxisSpacing: 10),
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 1,
+                                          //maxCrossAxisExtent: 200,
+                                          childAspectRatio: 4 / 3,
+                                          mainAxisSpacing: 10),
                                 ),
                               ),
                             ],
@@ -216,11 +238,11 @@ class GameOverviewScreen extends StatelessWidget {
                                   itemBuilder: (ctx, i) =>
                                       GameItem(loadedGames[i]),
                                   gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 1,
-                                      //maxCrossAxisExtent: 200,
-                                      childAspectRatio: 4 / 3,
-                                      mainAxisSpacing: 10),
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 1,
+                                          //maxCrossAxisExtent: 200,
+                                          childAspectRatio: 4 / 3,
+                                          mainAxisSpacing: 10),
                                 ),
                               ),
                             ],
@@ -271,11 +293,11 @@ class GameOverviewScreen extends StatelessWidget {
                                   itemBuilder: (ctx, i) =>
                                       GameItem(loadedGames[i]),
                                   gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 1,
-                                      //maxCrossAxisExtent: 200,
-                                      childAspectRatio: 4 / 3,
-                                      mainAxisSpacing: 10),
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 1,
+                                          //maxCrossAxisExtent: 200,
+                                          childAspectRatio: 4 / 3,
+                                          mainAxisSpacing: 10),
                                 ),
                               ),
                             ],
@@ -291,26 +313,28 @@ class GameOverviewScreen extends StatelessWidget {
         ),
       ),
     );
-
-
   }
 }
 
 class StatefulWrapper extends StatefulWidget {
   final Function onInit;
   final Widget child;
+
   const StatefulWrapper({@required this.onInit, @required this.child});
+
   @override
   _StatefulWrapperState createState() => _StatefulWrapperState();
 }
+
 class _StatefulWrapperState extends State<StatefulWrapper> {
   @override
   void initState() {
-    if(widget.onInit != null) {
+    if (widget.onInit != null) {
       widget.onInit();
     }
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return widget.child;
