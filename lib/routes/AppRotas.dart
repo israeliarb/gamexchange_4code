@@ -9,4 +9,5 @@ class AppRotas {
   static const REGISTRO = '/registro-card';
   static const LOGIN ='/login';
 
+
 }

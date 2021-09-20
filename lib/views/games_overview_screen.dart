@@ -1,14 +1,18 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gamexchange_4code/models/user.dart';
 import 'package:gamexchange_4code/provider/auth.dart';
 import 'package:gamexchange_4code/provider/users.dart';
 import 'package:gamexchange_4code/routes/AppRotas.dart';
+import 'package:gamexchange_4code/widgets/user_item.dart';
 import '../data/dummy_data.dart';
 import '../models/game.dart';
 import '../widgets/game_item.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
+import 'package:gamexchange_4code/provider/games.dart';
 import 'package:gamexchange_4code/widgets/menu_lateral.dart';
 
 class GameOverviewScreen extends StatelessWidget {
@@ -16,7 +20,15 @@ class GameOverviewScreen extends StatelessWidget {
 
   Position _currentPosition;
 
-  final List<Game> loadedGames = DUMMY_GAMES;
+  //List<User> loadedUsers = DUMMY_USERS;
+
+  //List<Game> loadedGames = DUMMY_GAMES;
+  List<Game> loadedGames;
+  Map<String, dynamic> item;
+
+  var aux;
+
+  List<Game> jogoAux;
 
   getCurrentLocation(BuildContext context) async {
     //if(getPermission() != 0){
@@ -25,28 +37,50 @@ class GameOverviewScreen extends StatelessWidget {
     Auth _auth = Provider.of<Auth>(context, listen: false);
     Users _users = Provider.of<Users>(context, listen: false);
 
+
     User _user = _auth.currentUser;
     print(_user);
     _user.latitude = _currentPosition.latitude;
     _user.longitude = _currentPosition.longitude;
     _users.atualizarUser(_user);
-    //}
   }
-
-  /*getPermission() async {
-    final GeolocationResult result =
-    await Geolocation.requestLocationPermission(
-        permission: const LocationPermission(
-            android: LocationPermissionAndroid.fine,
-            ios: LocationPermissionIOS.always));
-    return result;
-  }*/
 
   @override
   Widget build(BuildContext context) {
+    Users users = Provider.of(context);
+    Auth _auth = Provider.of<Auth>(context, listen: false);
+    User _user = _auth.currentUser;
+    //getCurrentLocation(context);
+    Users lista = users.getOrdenado(context);
+    //List<Game> loadedGames;
+    //Provider.of<Games>(context, listen: false).carregarUserGames();
+
+    var carregarUserGames = Provider.of<Games>(context, listen: false).carregarUserGames();
+
+    List<Games> userGames;
+    carregarUserGames.then((value) => {
+      item = value,
+      //loadedGames.add(item.values.first.toString()),
+      print(item.values.first),
+      aux = item[0],
+      jogoAux = aux.split(","),
+      item.values.forEach((element) {
+        //aux = item.values.first;
+        //jogoAux = aux.split(",");
+        //loadedGames.add(jogoAux);
+      }),
+      //loadedGames.add(string.split()),
+      print(item.values.first)
+    });
+
+    //Games games = getUserGameList(context);
+
+    //List<Game> loadedGames = games.items;
+
     return StatefulWrapper(
       onInit: () {
         getCurrentLocation(context);
+        users.getOrdenado(context); //função que ordena a lista de usuários
       },
       child: Scaffold(
         appBar: AppBar(
@@ -94,7 +128,7 @@ class GameOverviewScreen extends StatelessWidget {
             children: <Widget>[
               DrawerHeader(
                 child: Text(
-                  "Usuario", //VERIFICAR COMO COLOCAR O NOME DO USUÁRIO
+                  _user.nickname, //VERIFICAR COMO COLOCAR O NOME DO USUÁRIO
                   style: TextStyle(
                       fontSize: 20,
                       color: Colors.grey[200],
@@ -142,6 +176,30 @@ class GameOverviewScreen extends StatelessWidget {
                 SizedBox(
                   height: 20,
                 ),
+            /*Container(
+                  //cria as listas por usuário
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey[900],
+                            //borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: GridView.builder(
+                            padding: EdgeInsets.all(5.0),
+                            scrollDirection: Axis.horizontal,
+                            itemCount: lista.items.length,
+                            itemBuilder: (ctx, i) => UserItem(lista.items[i]),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),*/
+
                 Container(
                   //cria as listas por usuário
                   child: Column(
@@ -157,20 +215,12 @@ class GameOverviewScreen extends StatelessWidget {
                           child: Column(
                             children: [
                               Text(
-                                "User: Yunikko",
+                                lista.items[2].nickname,
                                 style: TextStyle(
                                     fontSize: 20,
                                     color: Colors.grey[200],
                                     fontFamily: 'Anton'),
                               ),
-                              /*Text(
-                                    "Jogos",
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        color: Colors.grey[200],
-                                        fontFamily: 'Lato'
-                                    ),
-                                  ),*/
                               SizedBox(
                                 height: 5,
                               ),
@@ -179,15 +229,20 @@ class GameOverviewScreen extends StatelessWidget {
                                 child: GridView.builder(
                                   scrollDirection: Axis.horizontal,
                                   //padding: const EdgeInsets.all(10),
-                                  itemCount: loadedGames.length,
+                                  itemCount: item != null? item.length:0,
+                                  //itemCount: item,
+                                  //itemCount: loadedGames.length,
                                   itemBuilder: (ctx, i) =>
-                                      GameItem(loadedGames[i]),
+                                      //GameItem(loadedGames[i]),
+                                      //GameListItem(item.values.first[i]),
+                                      //GameItem(item.values.first[i]),
+                                      GameItem(item.values.first[i]),
                                   gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 1,
-                                          //maxCrossAxisExtent: 200,
-                                          childAspectRatio: 4 / 3,
-                                          mainAxisSpacing: 10),
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 1,
+                                      //maxCrossAxisExtent: 200,
+                                      childAspectRatio: 4 / 3,
+                                      mainAxisSpacing: 10),
                                 ),
                               ),
                             ],
@@ -197,62 +252,7 @@ class GameOverviewScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                Container(
-                  //cria as listas por usuário
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.grey[900],
-                            //borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Column(
-                            children: [
-                              Text(
-                                "User: Iarb",
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.grey[200],
-                                    fontFamily: 'Anton'),
-                              ),
-                              /*Text(
-                                "Jogos",
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.grey[200],
-                                    fontFamily: 'Lato'
-                                ),
-                              ),*/
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Container(
-                                height: 250,
-                                child: GridView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  //padding: const EdgeInsets.all(10),
-                                  itemCount: loadedGames.length,
-                                  itemBuilder: (ctx, i) =>
-                                      GameItem(loadedGames[i]),
-                                  gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 1,
-                                          //maxCrossAxisExtent: 200,
-                                          childAspectRatio: 4 / 3,
-                                          mainAxisSpacing: 10),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
+                /*Container(
                   //cria as listas por usuário
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -306,7 +306,7 @@ class GameOverviewScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                ),
+                ),*/
               ],
             ),
           ),
@@ -341,19 +341,58 @@ class _StatefulWrapperState extends State<StatefulWrapper> {
   }
 }
 /*
-actions: <Widget> [
-  Padding(
-    padding: EdgeInsets.all(10.0),
-    child: Container(
-    width: 30,
-    height: 30,
-    decoration: BoxDecoration(
-      color: Colors.grey[800],
-      borderRadius: BorderRadius.circular(10)
-    ),
-    child: Center(
-      child: Icon(Icons.account_box),
-    ),
-  ),
-  )
-]*/
+                 Container(
+                  //cria as listas por usuário
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey[900],
+                            //borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Column(
+                            children: [
+                              Text(
+                                "User: Iarb",
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.grey[200],
+                                    fontFamily: 'Anton'),
+                              ),
+                              /*Text(
+                                "Jogos",
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.grey[200],
+                                    fontFamily: 'Lato'
+                                ),
+                              ),*/
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Container(
+                                height: 250,
+                                child: GridView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  //padding: const EdgeInsets.all(10),
+                                  itemCount: loadedGames.length,
+                                  itemBuilder: (ctx, i) =>
+                                      GameItem(loadedGames[i]),
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 1,
+                                          //maxCrossAxisExtent: 200,
+                                          childAspectRatio: 4 / 3,
+                                          mainAxisSpacing: 10),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),*/

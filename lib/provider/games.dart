@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gamexchange_4code/models/game.dart';
+import 'package:gamexchange_4code/models/user.dart';
 //import 'package:flutter_app/data/musicas_exemplo.dart';
 import 'package:http/http.dart' as http;
 import 'dart:core';
@@ -9,19 +10,24 @@ import 'dart:core';
 class Games with ChangeNotifier {
   static const _baseUrl =
       'https://code-gamexchange-default-rtdb.firebaseio.com/games';
-  List<Game> _items = []; /*{...GAMES_EXEMPLO}*/
+  List<Game> _items = [];
+
+  /*{...GAMES_EXEMPLO}*/
   String _token;
   String _userId;
+
   List<Game> get items => [..._items];
 
-  Games(this._token,this._userId,this._items);
+  Games(this._token, this._userId, this._items);
 
   int get count {
     return _items.length;
   }
 
   Future<void> carregarGames() async {
-    final response = await http.get(Uri.parse("$_baseUrl/$_userId.json?auth=$_token"));
+    final response = await http.get(
+        Uri.parse("$_baseUrl/$_userId.json?auth=$_token"));
+
     Map<String, dynamic> data = json.decode(response.body);
 
     _items.clear();
@@ -39,6 +45,31 @@ class Games with ChangeNotifier {
       notifyListeners();
     }
     return Future.value();
+  }
+
+  Future<Map<String, dynamic>> carregarUserGames() async {
+    final response = await http.get(Uri.parse("$_baseUrl.json"));
+    Map<String, dynamic> data = json.decode(response.body);
+
+    data.forEach((User, userId) {
+      _items.clear();
+      if (data != null) {
+        data.forEach((gameId, gameData) {
+          _items.add(Game(
+            id: gameId,
+            //fkUser: gameData['fkUser'],
+            nome: gameData['nome'],
+            xchange: gameData['xchange'],
+            plataforma: gameData['plataforma'],
+            estado: gameData['estado'],
+            imageUrl: gameData['imageUrl'],
+          ));
+        });
+        notifyListeners();
+      }
+      return Future.value();
+    });
+    return data;
   }
 
   Future<void> adicionarGame(Game novoGame) async {
@@ -94,7 +125,8 @@ class Games with ChangeNotifier {
       notifyListeners();
 
       final response =
-          await http.delete(Uri.parse("$_baseUrl/$_userId/${game.id}.json?auth=$_token"));
+      await http.delete(
+          Uri.parse("$_baseUrl/$_userId/${game.id}.json?auth=$_token"));
 
       if (response.statusCode >= 400) {
         _items.insert(index, game);
@@ -102,5 +134,26 @@ class Games with ChangeNotifier {
         throw HttpException('Ocorreu um erro na exclusão do jogo.');
       }
     }
+  }
+
+  Game criaObjeto(Map gameText){
+    Game game;
+
+    _items.clear();
+    if (gameText != null) {
+      gameText.forEach((gameId, gameData) {
+        _items.add(Game(
+          id: gameId,
+          fkUser: gameData['fkUser'],
+          nome: gameData['nome'],
+          xchange: gameData['xchange'],
+          plataforma: gameData['plataforma'],
+          estado: gameData['estado'],
+          imageUrl: gameData['imageUrl'],
+        ));
+      });
+      notifyListeners();
+    }
+    return game;
   }
 }

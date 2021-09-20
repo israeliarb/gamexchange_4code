@@ -65,7 +65,7 @@ class Auth with ChangeNotifier {
       throw AuthException(responseBody['error']['message']);
     } else {
       await users.carregarUser();
-
+      //await games.carregaUserGames();
 
       _token = responseBody["idToken"];
       _userId = responseBody["localId"];

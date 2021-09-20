@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gamexchange_4code/provider/users.dart';
 import 'package:geolocator/geolocator.dart';
 
 class User with ChangeNotifier{
@@ -21,4 +22,5 @@ class User with ChangeNotifier{
     this.latitude,
     this.longitude,
   });
+
 }

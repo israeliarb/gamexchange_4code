@@ -23,10 +23,8 @@ import './provider/auth.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
-
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
@@ -52,6 +50,7 @@ class MyApp extends StatelessWidget {
         ),*/
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'gameXchange',
         theme: ThemeData.dark(
           //primarySwatch: Colors.purple,
