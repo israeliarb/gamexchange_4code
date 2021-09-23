@@ -10,6 +10,8 @@ import 'dart:core';
 class Games with ChangeNotifier {
   static const _baseUrl =
       'https://code-gamexchange-default-rtdb.firebaseio.com/games';
+  static const _userUrl =
+      'https://code-gamexchange-default-rtdb.firebaseio.com/users';
   List<Game> _items = [];
 
   /*{...GAMES_EXEMPLO}*/
@@ -40,6 +42,7 @@ class Games with ChangeNotifier {
           plataforma: gameData['plataforma'],
           estado: gameData['estado'],
           imageUrl: gameData['imageUrl'],
+          //fkUser: _userId,
         ));
       });
       notifyListeners();
@@ -47,16 +50,16 @@ class Games with ChangeNotifier {
     return Future.value();
   }
 
-  Future<Map<String, dynamic>> carregarUserGames() async {
+  /*Future<Map<String, dynamic>> carregarUserGames() async {
     final response = await http.get(Uri.parse("$_baseUrl.json"));
     Map<String, dynamic> data = json.decode(response.body);
 
+    _items.clear();
     data.forEach((User, userId) {
-      _items.clear();
       if (data != null) {
-        data.forEach((gameId, gameData) {
+        data.forEach((userId, gameData) {
           _items.add(Game(
-            id: gameId,
+            id: userId,
             //fkUser: gameData['fkUser'],
             nome: gameData['nome'],
             xchange: gameData['xchange'],
@@ -70,6 +73,44 @@ class Games with ChangeNotifier {
       return Future.value();
     });
     return data;
+  }*/
+
+  Future<Map<String, dynamic>> carregarUserGames() async {
+    final response = await http.get(Uri.parse("$_baseUrl.json"));
+    Map<String, dynamic> data = json.decode(response.body);
+    final userList = await http.get(Uri.parse("$_userUrl.json"));
+    Map<String, dynamic> userDataList = json.decode(userList.body);
+    /*data.forEach((User, userId) async{
+      final userList = await http.get(Uri.parse("$_userUrl.json"));
+      userDataList = json.decode(userList.body);
+    });*/
+
+    _items.clear();
+    if (data != null){
+      data.forEach((User, userId) {
+        if (data != null) {
+          data.forEach((userId, userData){
+            userDataList.forEach((user, gameData) async {
+              final List = await http.get(Uri.parse("$_baseUrl/$user.json"));
+              Map<String, dynamic> userDataList = json.decode(List.body);
+              _items.add(Game(
+                id: userId,
+                //fkUser: _userId,
+                nome: gameData['nome'],
+                xchange: gameData['xchange'],
+                plataforma: gameData['plataforma'],
+                estado: gameData['estado'],
+                imageUrl: gameData['imageUrl'],
+              ));
+            });
+
+          });
+          notifyListeners();
+        }
+        return Future.value();
+      });
+      return data;
+    }
   }
 
   Future<void> adicionarGame(Game novoGame) async {
@@ -81,6 +122,7 @@ class Games with ChangeNotifier {
         'plataforma': novoGame.plataforma,
         'estado': novoGame.estado,
         'imageUrl': novoGame.imageUrl,
+        //'fkUser': _userId,
       }),
     );
 
@@ -91,6 +133,7 @@ class Games with ChangeNotifier {
       plataforma: novoGame.plataforma,
       estado: novoGame.estado,
       imageUrl: novoGame.imageUrl,
+      //fkUser: _userId,
     ));
     notifyListeners();
   }
@@ -110,6 +153,7 @@ class Games with ChangeNotifier {
           'plataforma': game.plataforma,
           'estado': game.estado,
           'imageUrl': game.imageUrl,
+          //'fkUser': _userId,
         }),
       );
       _items[index] = game;
@@ -136,24 +180,4 @@ class Games with ChangeNotifier {
     }
   }
 
-  Game criaObjeto(Map gameText){
-    Game game;
-
-    _items.clear();
-    if (gameText != null) {
-      gameText.forEach((gameId, gameData) {
-        _items.add(Game(
-          id: gameId,
-          fkUser: gameData['fkUser'],
-          nome: gameData['nome'],
-          xchange: gameData['xchange'],
-          plataforma: gameData['plataforma'],
-          estado: gameData['estado'],
-          imageUrl: gameData['imageUrl'],
-        ));
-      });
-      notifyListeners();
-    }
-    return game;
-  }
 }
