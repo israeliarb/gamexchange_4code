@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gamexchange_4code/models/gamelist.dart';
 import 'package:gamexchange_4code/models/user.dart';
 import 'package:gamexchange_4code/provider/auth.dart';
 import 'package:gamexchange_4code/provider/users.dart';
@@ -22,13 +24,17 @@ class GameOverviewScreen extends StatelessWidget {
 
   //List<User> loadedUsers = DUMMY_USERS;
 
-  //List<Game> loadedGames = DUMMY_GAMES;
-  List<Game> loadedGames;
+  List<Game> loadedGames = [];
+  Game jogo;
+  List<Game> userGameList = [];
+  //Map<Game, dynamic> mapaJogos;
+  //var teste;
+
   Map<String, dynamic> item;
+  Map<String, dynamic> teste;
 
+  List<String> userId = [];
   var aux;
-
-  List<Game> jogoAux;
 
   getCurrentLocation(BuildContext context) async {
     //if(getPermission() != 0){
@@ -50,36 +56,58 @@ class GameOverviewScreen extends StatelessWidget {
     Users users = Provider.of(context);
     Auth _auth = Provider.of<Auth>(context, listen: false);
     User _user = _auth.currentUser;
-    //getCurrentLocation(context);
     Users lista = users.getOrdenado(context);
-    //List<Game> loadedGames;
-    //Provider.of<Games>(context, listen: false).carregarUserGames();
 
     var carregarUserGames = Provider.of<Games>(context, listen: false).carregarUserGames();
 
-    List<Games> userGames;
-    carregarUserGames.then((value) => {
+    var splitLista;
+    carregarUserGames.then((value) =>
+    {
       item = value,
-      //loadedGames.add(item.values.first.toString()),
-      print(item.values.first),
-      aux = item[0],
-      jogoAux = aux.split(","),
-      item.values.forEach((element) {
-        //aux = item.values.first;
-        //jogoAux = aux.split(",");
-        //loadedGames.add(jogoAux);
-      }),
-      //loadedGames.add(string.split()),
-      print(item.values.first)
+      teste = item,
+        teste.entries.forEach((unidade) {
+          userId.add(unidade.key);
+          teste.values.forEach((element) {
+            aux = json.encode(element);
+            //userId = item.values;
+            splitLista = aux.split("}");
+
+            splitLista.forEach((ocorrencia) {
+              var splitJogo = ocorrencia.split("\"");
+              String id = splitJogo[1];
+              //String fkUser = splitJogo[9];
+              String nome = splitJogo[13];
+              String xchange = splitJogo[21];
+              String plataforma = splitJogo[17];
+              String estado = splitJogo[5];
+              String imageUrl = splitJogo[9];
+
+              jogo = new Game(
+                  nome: nome,
+                  xchange: xchange,
+                  imageUrl: imageUrl,
+                  plataforma: plataforma,
+                  id: id,
+                  estado: estado,
+                  //fkUser: fkUser
+              );
+
+              userGameList.add(jogo);
+              // userGameList.add(new Game(estado: splitJogo[3], plataforma: splitJogo[17], id: splitJogo[1], imageUrl: splitJogo[9], nome: splitJogo[13], xchange: splitJogo[21]));
+
+            });
+          });
+        }),
+        teste.removeWhere((key, value) => key == (userId[userId.length-1])),
+        print(teste),
+
     });
 
-    //Games games = getUserGameList(context);
-
-    //List<Game> loadedGames = games.items;
 
     return StatefulWrapper(
       onInit: () {
         getCurrentLocation(context);
+        carregarUserGames = Provider.of<Games>(context, listen: false).carregarUserGames();
         users.getOrdenado(context); //função que ordena a lista de usuários
       },
       child: Scaffold(
@@ -113,14 +141,6 @@ class GameOverviewScreen extends StatelessWidget {
               },
             )
           ],
-          /*actions: <Widget> [
-              IconButton(
-                onPressed: () {
-                  Navigator.pop(context, );
-                },
-                icon: Icon(Icons.account_box, size: 20, color: Colors.white),
-              ),
-            ],*/
         ),
         drawer: MenuLateral(),
         endDrawer: Drawer(
@@ -215,7 +235,16 @@ class GameOverviewScreen extends StatelessWidget {
                           child: Column(
                             children: [
                               Text(
-                                lista.items[2].nickname,
+                                lista.items[1].nickname,
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.grey[200],
+                                    fontFamily: 'Anton'),
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),Text(
+                                lista.items[1].telefone,
                                 style: TextStyle(
                                     fontSize: 20,
                                     color: Colors.grey[200],
@@ -228,15 +257,171 @@ class GameOverviewScreen extends StatelessWidget {
                                 height: 250,
                                 child: GridView.builder(
                                   scrollDirection: Axis.horizontal,
-                                  //padding: const EdgeInsets.all(10),
-                                  itemCount: item != null? item.length:0,
-                                  //itemCount: item,
-                                  //itemCount: loadedGames.length,
+                                  itemCount: userGameList.length,
                                   itemBuilder: (ctx, i) =>
-                                      //GameItem(loadedGames[i]),
-                                      //GameListItem(item.values.first[i]),
-                                      //GameItem(item.values.first[i]),
-                                      GameItem(item.values.first[i]),
+                                      GameItem(userGameList[i]),
+                                  gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 1,
+                                      //maxCrossAxisExtent: 200,
+                                      childAspectRatio: 4 / 3,
+                                      mainAxisSpacing: 10),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),Container(
+                  //cria as listas por usuário
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey[900],
+                            //borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Column(
+                            children: [
+                              Text(
+                                lista.items[2].nickname,
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.grey[200],
+                                    fontFamily: 'Anton'),
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),Text(
+                                lista.items[2].telefone,
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.grey[200],
+                                    fontFamily: 'Anton'),
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Container(
+                                height: 250,
+                                child: GridView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: userGameList.length,
+                                  itemBuilder: (ctx, i) =>
+                                      GameItem(userGameList[i]),
+                                  gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 1,
+                                      //maxCrossAxisExtent: 200,
+                                      childAspectRatio: 4 / 3,
+                                      mainAxisSpacing: 10),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),Container(
+                  //cria as listas por usuário
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey[900],
+                            //borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Column(
+                            children: [
+                              Text(
+                                lista.items[3].nickname,
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.grey[200],
+                                    fontFamily: 'Anton'),
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),Text(
+                                lista.items[3].telefone,
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.grey[200],
+                                    fontFamily: 'Anton'),
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Container(
+                                height: 250,
+                                child: GridView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: userGameList.length,
+                                  itemBuilder: (ctx, i) =>
+                                      GameItem(userGameList[i]),
+                                  gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 1,
+                                      //maxCrossAxisExtent: 200,
+                                      childAspectRatio: 4 / 3,
+                                      mainAxisSpacing: 10),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),Container(
+                  //cria as listas por usuário
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey[900],
+                            //borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Column(
+                            children: [
+                              Text(
+                                lista.items[4].nickname,
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.grey[200],
+                                    fontFamily: 'Anton'),
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),Text(
+                                lista.items[4].telefone,
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.grey[200],
+                                    fontFamily: 'Anton'),
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Container(
+                                height: 250,
+                                child: GridView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: userGameList.length,
+                                  itemBuilder: (ctx, i) =>
+                                      GameItem(userGameList[i]),
                                   gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: 1,
@@ -252,6 +437,61 @@ class GameOverviewScreen extends StatelessWidget {
                     ],
                   ),
                 ),
+                // ),Container(
+                //   //cria as listas por usuário
+                //   child: Column(
+                //     crossAxisAlignment: CrossAxisAlignment.start,
+                //     children: [
+                //       Padding(
+                //         padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                //         child: Container(
+                //           decoration: BoxDecoration(
+                //             color: Colors.grey[900],
+                //             //borderRadius: BorderRadius.circular(15),
+                //           ),
+                //           child: Column(
+                //             children: [
+                //               Text(
+                //                 lista.items[2].nickname,
+                //                 style: TextStyle(
+                //                     fontSize: 20,
+                //                     color: Colors.grey[200],
+                //                     fontFamily: 'Anton'),
+                //               ),
+                //               SizedBox(
+                //                 height: 5,
+                //               ),
+                //               Container(
+                //                 height: 250,
+                //                 child: GridView.builder(
+                //                   scrollDirection: Axis.horizontal,
+                //                   //padding: const EdgeInsets.all(10),
+                //                   itemCount: userGameList.length,
+                //                   //itemCount: item != null? item.length:0,
+                //                   //itemCount: item,
+                //                   //itemCount: loadedGames.length,
+                //                   itemBuilder: (ctx, i) =>
+                //                       //GameItem(loadedGames[i]),
+                //                       //GameListItem(item.values.first[i]),
+                //                       //GameItem(item.values.first[i]),
+                //                       GameItem(userGameList[i]),
+                //                       //GameItem(jogo),
+                //                       //GameItem(users.criaObjetoGame(item, aux, splitLista, jogo, userGameList)),
+                //                   gridDelegate:
+                //                   SliverGridDelegateWithFixedCrossAxisCount(
+                //                       crossAxisCount: 1,
+                //                       //maxCrossAxisExtent: 200,
+                //                       childAspectRatio: 4 / 3,
+                //                       mainAxisSpacing: 10),
+                //                 ),
+                //               ),
+                //             ],
+                //           ),
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
                 /*Container(
                   //cria as listas por usuário
                   child: Column(
@@ -305,8 +545,8 @@ class GameOverviewScreen extends StatelessWidget {
                         ),
                       ),
                     ],
-                  ),
-                ),*/
+                  ),*/
+                //),
               ],
             ),
           ),

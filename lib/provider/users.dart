@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:gamexchange_4code/models/game.dart';
 import 'package:gamexchange_4code/models/user.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
@@ -167,5 +168,42 @@ class Users with ChangeNotifier {
     //Games games = Provider.of(context);
 
     return _ordenado;
+  }
+  Game criaObjetoGame(Map item, var aux, var splitLista, Game jogo, List<Game> userGameList){
+
+    item.values.forEach((element) {
+      aux = json.encode(element);
+      splitLista = aux.split("}");
+
+      splitLista.forEach((ocorrencia){
+        var splitJogo = ocorrencia.split("\"");
+        String id = splitJogo[1];
+        //String fkUser = idUser;
+        String nome = splitJogo[13];
+        String xchange = splitJogo[21];
+        String plataforma = splitJogo[17];
+        String estado = splitJogo[3];
+        String imageUrl = splitJogo[9];
+
+
+
+        jogo = new Game(nome: splitJogo[13], xchange: splitJogo[21], imageUrl: splitJogo[9], plataforma: splitJogo[17], id: splitJogo[1], estado: splitJogo[3]);
+
+        //userGameList = new Game(nome: splitJogo[13], xchange: splitJogo[21], imageUrl: splitJogo[9], plataforma: splitJogo[17], id: splitJogo[1], estado: splitJogo[3]);
+
+        return jogo;
+
+      });
+    });
+
+
+
+  }
+  Game retornaJogo(String userId, Game jogo){
+    if (userId == jogo.fkUser) {
+      return jogo;
+    } else {
+      return null;
+    }
   }
 }

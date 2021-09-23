@@ -13,14 +13,13 @@ class GameItem extends StatelessWidget{
       child: Image.network(
         game.imageUrl,
         fit: BoxFit.cover,
-
       ),
       footer: GridTileBar(
         backgroundColor: Colors.black38,
         leading: IconButton(
           icon: Image.asset('assets/icons/xchange.png'),
           iconSize: 10,
-          onPressed: () {},
+          onPressed: (){},
         ),
         title: Text(
           game.xchange,
@@ -35,3 +34,4 @@ class GameItem extends StatelessWidget{
   }
 
 }
+

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gamexchange_4code/models/game.dart';
+import 'package:gamexchange_4code/models/user.dart';
+import 'package:gamexchange_4code/provider/auth.dart';
 import 'package:gamexchange_4code/provider/games.dart';
+import 'package:gamexchange_4code/provider/users.dart';
 import 'package:provider/provider.dart';
 
 class GameForm extends StatefulWidget {
@@ -12,10 +15,16 @@ class _GameFormState extends State<GameForm> {
   final _form = GlobalKey<FormState>();
   bool _isLoading = false;
   final _formData = Map<String, Object>();
+  User _user;
 
   void initState() {
     super.initState();
     Provider.of<Games>(context, listen: false).carregarGames();
+    Auth _auth = Provider.of<Auth>(context, listen: false);
+    Users _users = Provider.of<Users>(context, listen: false);
+
+
+    _user = _auth.currentUser;
   }
 
   @override
@@ -34,6 +43,7 @@ class _GameFormState extends State<GameForm> {
       _formData['plataforma'] = game.plataforma;
       _formData['estado'] = game.estado;
       _formData['imageUrl'] = game.imageUrl;
+      //_formData['fkUser'] = game.fkUser;
     }
   }
 
@@ -331,6 +341,7 @@ class _GameFormState extends State<GameForm> {
                           plataforma: _formData['plataforma'],
                           estado: _formData['estado'],
                           imageUrl: _formData['imageUrl'],
+                          //fkUser: _user.nickname,
                         );
 
                         setState(() {

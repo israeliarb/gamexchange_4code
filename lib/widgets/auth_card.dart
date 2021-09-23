@@ -118,7 +118,7 @@ class _AuthCardState extends State<AuthCard> {
                         }
                         return null;
                       },
-                      onSaved: (value) => _authData['email'] = value,
+                      onSaved: (value) => _authData['email'] = value.trim(),
                     ),
                   ),
                   SizedBox(
