@@ -1,6 +1,6 @@
 # gamexchange_4code
 
-A new Flutter application.
+Nova versão do projeto de PIDS gamexchange
 
 ## Getting Started
 
